@@ -1,0 +1,36 @@
+id: census-add-note
+resourceType: Questionnaire
+name: census-add-note
+title: Add Note
+status: active
+mapping:
+  - reference: urn:uuid:Mapping:census-add-note-extract
+launchContext:
+  - name:
+      code: Encounter
+    type:
+      - Encounter
+item:
+  - text: Encounter ID
+    type: string
+    linkId: encounter-id
+    hidden: true
+    initialExpression:
+      language: text/fhirpath
+      expression: "%Encounter.id"
+  - text: Patient reference
+    type: string
+    linkId: encounter-subject
+    hidden: true
+    initialExpression:
+      language: text/fhirpath
+      expression: "%Encounter.subject.reference"
+  - text: Note
+    type: text
+    linkId: note-text
+    required: true
+
+meta:
+  profile:
+    - https://emr-core.beda.software/StructureDefinition/fhir-emr-questionnaire
+url: https://aidbox.emr.beda.software/fhir/Questionnaire/census-add-note

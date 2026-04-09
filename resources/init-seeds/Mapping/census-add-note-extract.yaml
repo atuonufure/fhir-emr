@@ -1,0 +1,24 @@
+resourceType: Mapping
+id: census-add-note-extract
+type: FHIRPath
+body:
+  "{% assign %}":
+    - encounterId: "{{ %QuestionnaireResponse.answers('encounter-id') }}"
+    - encounterSubject: "{{ %QuestionnaireResponse.answers('encounter-subject') }}"
+    - noteText: "{{ %QuestionnaireResponse.answers('note-text') }}"
+
+  resourceType: Bundle
+  type: transaction
+  entry:
+    - request:
+        method: POST
+        url: /Communication
+      resource:
+        resourceType: Communication
+        status: completed
+        encounter:
+          reference: "{{ 'Encounter/' + %encounterId }}"
+        subject:
+          reference: "{{ %encounterSubject }}"
+        payload:
+          - contentString: "{{ %noteText }}"

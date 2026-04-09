@@ -1,0 +1,35 @@
+resourceType: Mapping
+id: census-add-patient-extract
+type: FHIRPath
+body:
+  "{% assign %}":
+    - patientRef: "{{ %QuestionnaireResponse.answers('patient-name') }}"
+    - birthDate: "{{ %QuestionnaireResponse.answers('birth-date') }}"
+    - providerRef: "{{ %QuestionnaireResponse.answers('provider') }}"
+    - visitType: "{{ %QuestionnaireResponse.answers('type-of-visit') }}"
+
+  resourceType: Bundle
+  type: transaction
+  entry:
+    - request:
+        method: POST
+        url: /Encounter
+      resource:
+        resourceType: Encounter
+        status: planned
+        class:
+          code: IMP
+          system: http://terminology.hl7.org/CodeSystem/v3-ActCode
+          display: inpatient encounter
+        subject:
+          reference: "{{ %patientRef.reference }}"
+          display: "{{ %patientRef.display }}"
+        participant:
+          - individual:
+              reference: "{{ %providerRef.reference }}"
+              display: "{{ %providerRef.display }}"
+        type:
+          - coding:
+              - "{{ %visitType }}"
+        period:
+          start: "{{ now() }}"

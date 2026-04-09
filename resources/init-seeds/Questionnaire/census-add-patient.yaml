@@ -1,0 +1,59 @@
+id: census-add-patient
+resourceType: Questionnaire
+name: census-add-patient
+title: Add Patient to Census
+status: active
+mapping:
+  - reference: urn:uuid:Mapping:census-add-patient-extract
+item:
+  - text: Patient name
+    type: reference
+    referenceResource:
+      - Patient
+    required: true
+    linkId: patient-name
+    answerExpression:
+      language: application/x-fhir-query
+      expression: "Patient?_sort=-_lastUpdated&_count=50"
+    choiceColumn:
+      - forDisplay: true
+        path: "name.first().given.first() + ' ' + name.first().family"
+  - text: Birth date
+    type: date
+    linkId: birth-date
+  - text: Provider
+    type: reference
+    referenceResource:
+      - PractitionerRole
+    required: true
+    linkId: provider
+    answerExpression:
+      language: application/x-fhir-query
+      expression: "PractitionerRole?_assoc=practitioner"
+    choiceColumn:
+      - forDisplay: true
+        path: >-
+          practitioner.resource.name.given.first() + ' ' +
+          practitioner.resource.name.family
+  - text: Type of Visit
+    type: choice
+    linkId: type-of-visit
+    required: true
+    answerOption:
+      - valueCoding:
+          system: http://example.org/census-visit-type
+          code: ltc
+          display: LTC
+      - valueCoding:
+          system: http://example.org/census-visit-type
+          code: hospice
+          display: Hospice
+      - valueCoding:
+          system: http://example.org/census-visit-type
+          code: skilled
+          display: Skilled
+
+meta:
+  profile:
+    - https://emr-core.beda.software/StructureDefinition/fhir-emr-questionnaire
+url: https://aidbox.emr.beda.software/fhir/Questionnaire/census-add-patient
