@@ -2,6 +2,7 @@ import { t } from '@lingui/macro';
 import { Patient } from 'fhir/r4b';
 import { createContext } from 'react';
 
+import { CensusIcon } from 'src/icons/menu/CensusIcon';
 import { EncountersIcon } from 'src/icons/menu/EncountersIcon';
 import { InvoicesIcon } from 'src/icons/menu/InvoicesIcon';
 import { MagicSearchIcon } from 'src/icons/menu/MagicSearchIcon.tsx';
@@ -28,6 +29,7 @@ export const defaultMenuLayout: MenuLayoutValue = () =>
             { label: t`Services`, path: '/healthcare-services', icon: <ServicesIcon /> },
             { label: t`Encounters`, path: '/encounters', icon: <EncountersIcon /> },
             { label: t`Patients`, path: '/patients', icon: <PatientsIcon /> },
+            { label: t`Census`, path: '/census', icon: <CensusIcon /> },
             { label: t`Practitioners`, path: '/practitioners', icon: <PractitionersIcon /> },
             { label: t`Questionnaires`, path: '/questionnaires', icon: <QuestionnairesIcon /> },
             { label: t`Forms Library`, path: '/forms', icon: <QuestionnairesIcon /> },
@@ -36,6 +38,7 @@ export const defaultMenuLayout: MenuLayoutValue = () =>
         [Role.Practitioner]: () => [
             { label: t`Encounters`, path: '/encounters', icon: <EncountersIcon /> },
             { label: t`Patients`, path: '/patients', icon: <PatientsIcon /> },
+            { label: t`Census`, path: '/census', icon: <CensusIcon /> },
             { label: t`Questionnaires`, path: '/questionnaires', icon: <QuestionnairesIcon /> },
             { label: t`Forms Library`, path: '/forms', icon: <QuestionnairesIcon /> },
         ],

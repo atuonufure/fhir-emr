@@ -1,0 +1,100 @@
+id: census-patient-add
+resourceType: Questionnaire
+name: census-patient-add
+title: Add Patient to Census
+status: active
+mapping:
+  - reference: urn:uuid:Mapping:census-patient-add-extract
+launchContext:
+  - name:
+      code: Patient
+    type:
+      - Patient
+item:
+  - text: Patient
+    type: reference
+    referenceResource:
+      - Patient
+    required: true
+    linkId: patient-reference
+    answerExpression:
+      language: application/x-fhir-query
+      expression: "Patient"
+    choiceColumn:
+      - forDisplay: true
+        path: "name.given.first() + ' ' + name.family"
+  - text: Practitioner
+    type: reference
+    referenceResource:
+      - PractitionerRole
+    required: true
+    linkId: practitioner-role
+    answerExpression:
+      language: application/x-fhir-query
+      expression: "PractitionerRole?_assoc=practitioner"
+    choiceColumn:
+      - forDisplay: true
+        path: >-
+          practitioner.resource.name.given.first() + ' ' +
+          practitioner.resource.name.family
+  - text: Room
+    type: reference
+    referenceResource:
+      - Location
+    linkId: location
+    answerExpression:
+      language: application/x-fhir-query
+      expression: "Location"
+    choiceColumn:
+      - forDisplay: true
+        path: name
+  - text: Type of Care
+    type: choice
+    linkId: type-of-care
+    required: true
+    answerOption:
+      - valueCoding:
+          system: http://census.emr.beda.software/type-of-care
+          code: LTC
+          display: LTC
+      - valueCoding:
+          system: http://census.emr.beda.software/type-of-care
+          code: hospice
+          display: Hospice
+      - valueCoding:
+          system: http://census.emr.beda.software/type-of-care
+          code: skilled
+          display: Skilled
+  - text: Code
+    type: choice
+    linkId: encounter-code
+    answerOption:
+      - valueCoding:
+          system: http://census.emr.beda.software/code
+          code: full
+          display: Full
+      - valueCoding:
+          system: http://census.emr.beda.software/code
+          code: DNR
+          display: DNR
+  - text: Chief Complaint
+    type: text
+    linkId: chief-complaint
+  - text: DX Codes
+    type: string
+    linkId: dx-codes
+    repeats: true
+  - text: CPT Code
+    type: string
+    linkId: cpt-code
+  - text: Date
+    type: dateTime
+    linkId: date
+    initialExpression:
+      language: text/fhirpath
+      expression: "now()"
+
+meta:
+  profile:
+    - https://emr-core.beda.software/StructureDefinition/fhir-emr-questionnaire
+url: https://aidbox.emr.beda.software/fhir/Questionnaire/census-patient-add

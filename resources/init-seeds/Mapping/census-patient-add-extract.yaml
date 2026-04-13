@@ -1,0 +1,61 @@
+resourceType: Mapping
+id: census-patient-add-extract
+type: FHIRPath
+body:
+  "{% assign %}":
+    - patientReference: "{{ %QuestionnaireResponse.answers('patient-reference') }}"
+    - practitionerRole: "{{ %QuestionnaireResponse.answers('practitioner-role') }}"
+    - locationReference: "{{ %QuestionnaireResponse.answers('location') }}"
+    - typeOfCare: "{{ %QuestionnaireResponse.answers('type-of-care') }}"
+    - encounterCode: "{{ %QuestionnaireResponse.answers('encounter-code') }}"
+    - chiefComplaint: "{{ %QuestionnaireResponse.answers('chief-complaint') }}"
+    - dxCodes: "{{ %QuestionnaireResponse.answers('dx-codes') }}"
+    - cptCode: "{{ %QuestionnaireResponse.answers('cpt-code') }}"
+    - startDateTime: "{{ %QuestionnaireResponse.answers('date') }}"
+
+  resourceType: Bundle
+  type: transaction
+  entry:
+    - request:
+        method: POST
+        url: /Encounter
+      resource:
+        resourceType: Encounter
+        status: planned
+        class:
+          code: IMP
+          system: http://terminology.hl7.org/CodeSystem/v3-ActCode
+          display: inpatient encounter
+        type:
+          - coding:
+              - code: "{{ %typeOfCare.code }}"
+                system: "{{ %typeOfCare.system }}"
+                display: "{{ %typeOfCare.display }}"
+        priority:
+          "{% if %encounterCode.exists() %}":
+            coding:
+              - code: "{{ %encounterCode.code }}"
+                system: "{{ %encounterCode.system }}"
+                display: "{{ %encounterCode.display }}"
+        serviceType:
+          "{% if %cptCode.exists() %}":
+            coding:
+              - code: "{{ %cptCode }}"
+                system: http://www.ama-assn.org/go/cpt
+        period:
+          start: "{{ %startDateTime }}"
+        subject:
+          reference: "{{ %patientReference.reference }}"
+          display: "{{ %patientReference.display }}"
+        participant:
+          - individual: "{{ %practitionerRole }}"
+        location:
+          - "{% if %locationReference.exists() %}":
+              location: "{{ %locationReference }}"
+        reasonCode:
+          - "{% if %chiefComplaint.exists() %}":
+              text: "{{ %chiefComplaint }}"
+        diagnosis:
+          "{% for dx in %dxCodes %}":
+            - condition:
+                display: "{{ %dx }}"
