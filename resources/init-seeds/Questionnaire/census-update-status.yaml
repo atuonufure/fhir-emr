@@ -1,0 +1,47 @@
+id: census-update-status
+resourceType: Questionnaire
+name: census-update-status
+title: Update Status
+status: active
+mapping:
+  - reference: urn:uuid:Mapping:census-update-status-extract
+launchContext:
+  - name:
+      code: Encounter
+    type:
+      - Encounter
+item:
+  - text: Encounter ID
+    type: string
+    linkId: encounter-id
+    hidden: true
+    initialExpression:
+      language: text/fhirpath
+      expression: "%Encounter.id"
+  - text: Status
+    type: choice
+    linkId: status
+    required: true
+    itemControl:
+      coding:
+        - code: inline-choice
+    initialExpression:
+      language: text/fhirpath
+      expression: "%Encounter.status"
+    answerOption:
+      - valueCoding:
+          system: http://hl7.org/fhir/encounter-status
+          code: planned
+          display: Booked
+      - valueCoding:
+          system: http://hl7.org/fhir/encounter-status
+          code: finished
+          display: Fulfilled
+      - valueCoding:
+          system: http://hl7.org/fhir/encounter-status
+          code: cancelled
+          display: Cancelled
+meta:
+  profile:
+    - https://emr-core.beda.software/StructureDefinition/fhir-emr-questionnaire
+url: https://aidbox.emr.beda.software/fhir/Questionnaire/census-update-status

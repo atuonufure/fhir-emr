@@ -1,0 +1,55 @@
+id: census-add-patient
+resourceType: Questionnaire
+name: census-add-patient
+title: Add Patient to Census
+status: active
+mapping:
+  - reference: urn:uuid:Mapping:census-add-patient-extract
+item:
+  - text: Patient name
+    type: reference
+    linkId: patient-reference
+    required: true
+    referenceResource:
+      - Patient
+    answerExpression:
+      language: application/x-fhir-query
+      expression: "Patient?_count=25"
+    choiceColumn:
+      - forDisplay: true
+        path: "name.given.first() + ' ' + name.family"
+  - text: Birth date
+    type: date
+    linkId: birth-date
+    required: true
+  - text: Provider
+    type: reference
+    linkId: practitioner-role
+    required: true
+    referenceResource:
+      - PractitionerRole
+    answerExpression:
+      language: application/x-fhir-query
+      expression: "PractitionerRole?_assoc=practitioner"
+    choiceColumn:
+      - forDisplay: true
+        path: >-
+          practitioner.resource.name.given.first() + ' ' +
+          practitioner.resource.name.family
+  - text: Type of Visit
+    type: choice
+    linkId: visit-type
+    required: true
+    answerOption:
+      - valueCoding:
+          system: http://fhir.org/guides/argonaut-scheduling/CodeSystem/visit-type
+          code: consultation
+          display: The first appointment
+      - valueCoding:
+          system: http://fhir.org/guides/argonaut-scheduling/CodeSystem/visit-type
+          code: follow-up
+          display: A follow up visit
+meta:
+  profile:
+    - https://emr-core.beda.software/StructureDefinition/fhir-emr-questionnaire
+url: https://aidbox.emr.beda.software/fhir/Questionnaire/census-add-patient

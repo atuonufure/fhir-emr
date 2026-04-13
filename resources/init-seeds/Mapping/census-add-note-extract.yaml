@@ -1,0 +1,26 @@
+resourceType: Mapping
+id: census-add-note-extract
+type: FHIRPath
+body:
+  "{% assign %}":
+    - encounterId: "{{ %QuestionnaireResponse.answers('encounter-id') }}"
+    - noteContent: "{{ %QuestionnaireResponse.answers('note-content') }}"
+
+  resourceType: Bundle
+  type: transaction
+  entry:
+    - request:
+        method: POST
+        url: /Observation
+      resource:
+        resourceType: Observation
+        status: final
+        code:
+          coding:
+            - system: http://snomed.info/sct
+              code: "866145009"
+              display: Patient record note
+        note:
+          - text: "{{ %noteContent }}"
+        encounter:
+          reference: "{{ 'Encounter/' + %encounterId }}"
