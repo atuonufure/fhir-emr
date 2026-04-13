@@ -29,6 +29,7 @@ export const defaultMenuLayout: MenuLayoutValue = () =>
             { label: t`Encounters`, path: '/encounters', icon: <EncountersIcon /> },
             { label: t`Patients`, path: '/patients', icon: <PatientsIcon /> },
             { label: t`Practitioners`, path: '/practitioners', icon: <PractitionersIcon /> },
+            { label: t`Census`, path: '/census', icon: <PatientsIcon /> },
             { label: t`Questionnaires`, path: '/questionnaires', icon: <QuestionnairesIcon /> },
             { label: t`Forms Library`, path: '/forms', icon: <QuestionnairesIcon /> },
             { label: t`Magic Search`, path: '/magic-search', icon: <MagicSearchIcon /> },

@@ -6,6 +6,7 @@ import { AnonymousLayout } from 'src/components/BaseLayout';
 import { defaultFooterLayout } from 'src/components/BaseLayout/Footer/context';
 import { defaultMenuLayout } from 'src/components/BaseLayout/Sidebar/SidebarTop/context';
 import { PublicAppointment } from 'src/containers/Appointment/PublicAppointment';
+import { CensusList } from 'src/containers/CensusList';
 import { EncounterList } from 'src/containers/EncounterList';
 import { FormList } from 'src/containers/FormList';
 import { MagicSearchPage } from 'src/containers/MagicSearchPage';
@@ -45,6 +46,7 @@ export function App(props: AppProps) {
     // Define the default authenticated routes
     const defaultAuthenticatedRoutes = (
         <>
+            <Route path="/census" element={<CensusList />} />
             <Route path="/encounters" element={<EncounterList />} />
             <Route path="/scheduling" element={<OrganizationScheduling />} />
             <Route path="/medications" element={<MedicationManagement />} />
