@@ -1,0 +1,30 @@
+resourceType: Mapping
+id: add-patient-to-census-extract
+type: FHIRPath
+body:
+  "{% assign %}":
+    - patient: "{{ %QuestionnaireResponse.answers('patient') }}"
+    - birthDate: "{{ %QuestionnaireResponse.answers('birth-date') }}"
+    - practitionerRole: "{{ %QuestionnaireResponse.answers('practitioner-role') }}"
+    - typeOfVisit: "{{ %QuestionnaireResponse.answers('type-of-visit') }}"
+
+  resourceType: Bundle
+  type: transaction
+  entry:
+    - request:
+        method: POST
+        url: /Encounter
+      resource:
+        resourceType: Encounter
+        status: in-progress
+        class:
+          code: "{{ %typeOfVisit.code }}"
+          system: "{{ %typeOfVisit.system }}"
+          display: "{{ %typeOfVisit.display }}"
+        period:
+          start: "{{ now() }}"
+        subject:
+          reference: "{{ %patient.reference }}"
+          display: "{{ %patient.display }}"
+        participant:
+          - individual: "{{ %practitionerRole }}"
