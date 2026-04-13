@@ -1,0 +1,16 @@
+resourceType: Mapping
+id: census-update-status-extract
+type: FHIRPath
+body:
+  "{% assign %}":
+    - encounterId: "{{ %QuestionnaireResponse.answers('encounter-id') }}"
+    - status: "{{ %QuestionnaireResponse.answers('status') }}"
+
+  resourceType: Bundle
+  type: transaction
+  entry:
+    - request:
+        method: PATCH
+        url: "/Encounter/{{ %encounterId }}"
+      resource:
+        status: "{{ iif(%status.code.exists(), %status.code, %status) }}"
