@@ -25,5 +25,5 @@ body:
           - contentString: "{{ %noteText }}"
         sender:
           "{% if %authorRef.exists() %}":
-            reference: "{{ 'Practitioner/' + %authorRef.id }}"
+            reference: "{{ %authorRef.resourceType + '/' + %authorRef.id }}"
             display: "{{ %authorRef.name.first().given.first() + ' ' + %authorRef.name.first().family }}"
