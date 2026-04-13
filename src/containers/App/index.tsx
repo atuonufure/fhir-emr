@@ -6,6 +6,7 @@ import { AnonymousLayout } from 'src/components/BaseLayout';
 import { defaultFooterLayout } from 'src/components/BaseLayout/Footer/context';
 import { defaultMenuLayout } from 'src/components/BaseLayout/Sidebar/SidebarTop/context';
 import { PublicAppointment } from 'src/containers/Appointment/PublicAppointment';
+import { CensusList } from 'src/containers/CensusList';
 import { EncounterList } from 'src/containers/EncounterList';
 import { FormList } from 'src/containers/FormList';
 import { MagicSearchPage } from 'src/containers/MagicSearchPage';
@@ -68,6 +69,7 @@ export function App(props: AppProps) {
             <Route path="/questionnaires/:id" element={<div>questionnaires/:id</div>} />
             <Route path="/magic-search" element={<MagicSearchPage />} />
             <Route path="/healthcare-services" element={<HealthcareServiceList />} />
+            <Route path="/census" element={<CensusList />} />
         </>
     );
 
