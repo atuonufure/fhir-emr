@@ -5,11 +5,6 @@ title: Add Patient to Census
 status: active
 mapping:
   - reference: urn:uuid:Mapping:census-patient-add-extract
-launchContext:
-  - name:
-      code: Patient
-    type:
-      - Patient
 item:
   - text: Patient
     type: reference

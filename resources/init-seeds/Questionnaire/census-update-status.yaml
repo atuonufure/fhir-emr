@@ -7,7 +7,7 @@ mapping:
   - reference: urn:uuid:Mapping:census-update-status-extract
 launchContext:
   - name:
-      code: CurrentEncounter
+      code: Encounter
     type:
       - Encounter
     description: The census encounter to update
@@ -18,14 +18,14 @@ item:
     hidden: true
     initialExpression:
       language: text/fhirpath
-      expression: "%CurrentEncounter.id"
+      expression: "%Encounter.id"
   - text: Current Status
     type: string
     linkId: current-status
     readOnly: true
     initialExpression:
       language: text/fhirpath
-      expression: "%CurrentEncounter.status"
+      expression: "%Encounter.status"
   - text: New Status
     type: choice
     linkId: new-status

@@ -7,7 +7,7 @@ mapping:
   - reference: urn:uuid:Mapping:census-add-note-extract
 launchContext:
   - name:
-      code: CurrentEncounter
+      code: Encounter
     type:
       - Encounter
     description: The census encounter to add a note to
@@ -22,14 +22,14 @@ item:
     hidden: true
     initialExpression:
       language: text/fhirpath
-      expression: "%CurrentEncounter.id"
+      expression: "%Encounter.id"
   - text: Patient Reference
     type: string
     linkId: patient-reference
     hidden: true
     initialExpression:
       language: text/fhirpath
-      expression: "%CurrentEncounter.subject.reference"
+      expression: "%Encounter.subject.reference"
   - text: Note
     type: text
     linkId: note-text

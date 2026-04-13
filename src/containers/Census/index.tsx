@@ -10,7 +10,7 @@ import { ResourceListPage, navigationAction, questionnaireAction } from 'src/ube
 import { RecordType, ReportColumn, TableManager } from 'src/uberComponents/ResourceListPage/types';
 import { formatHumanDate } from 'src/utils/date';
 import { renderHumanName } from 'src/utils/fhir';
-import { matchCurrentUserRole, Role } from 'src/utils/role';
+import { matchCurrentUserRole, Role, selectCurrentUserRoleResource } from 'src/utils/role';
 
 import { getCensusSearchBarColumns } from './searchBarUtils';
 
@@ -261,6 +261,8 @@ export function Census() {
         },
     ];
 
+    const author = selectCurrentUserRoleResource();
+
     return (
         <ResourceListPage<Encounter>
             headerTitle={t`Census`}
@@ -278,6 +280,7 @@ export function Census() {
                 _sort: '-date,_id',
                 _count: 15,
             }}
+            defaultLaunchContext={[{ name: 'Author', resource: author }]}
             getFilters={getFilters}
             getTableColumns={getTableColumns}
             getRecordActions={getRecordActions}
