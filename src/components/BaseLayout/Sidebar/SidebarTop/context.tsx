@@ -26,6 +26,7 @@ export const defaultMenuLayout: MenuLayoutValue = () =>
         [Role.Admin]: () => [
             { label: t`Invoices`, path: '/invoices', icon: <InvoicesIcon /> },
             { label: t`Services`, path: '/healthcare-services', icon: <ServicesIcon /> },
+            { label: t`Census`, path: '/census', icon: <EncountersIcon /> },
             { label: t`Encounters`, path: '/encounters', icon: <EncountersIcon /> },
             { label: t`Patients`, path: '/patients', icon: <PatientsIcon /> },
             { label: t`Practitioners`, path: '/practitioners', icon: <PractitionersIcon /> },
@@ -34,6 +35,7 @@ export const defaultMenuLayout: MenuLayoutValue = () =>
             { label: t`Magic Search`, path: '/magic-search', icon: <MagicSearchIcon /> },
         ],
         [Role.Practitioner]: () => [
+            { label: t`Census`, path: '/census', icon: <EncountersIcon /> },
             { label: t`Encounters`, path: '/encounters', icon: <EncountersIcon /> },
             { label: t`Patients`, path: '/patients', icon: <PatientsIcon /> },
             { label: t`Questionnaires`, path: '/questionnaires', icon: <QuestionnairesIcon /> },

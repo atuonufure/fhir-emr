@@ -1,0 +1,39 @@
+resourceType: Mapping
+id: census-add-note-extract
+type: FHIRPath
+body:
+  "{% assign %}":
+    - encounterId: "{{ %QuestionnaireResponse.answers('encounter-id') }}"
+    - patientId: "{{ %QuestionnaireResponse.answers('patient-id') }}"
+    - noteText: "{{ %QuestionnaireResponse.answers('note-text') }}"
+    - author: "{{ %Author }}"
+
+  resourceType: Bundle
+  type: transaction
+  entry:
+    - request:
+        method: POST
+        url: /Observation
+      resource:
+        resourceType: Observation
+        status: final
+        code:
+          coding:
+            - code: 34109-9
+              system: http://loinc.org
+              display: Note
+          text: Note
+        category:
+          - coding:
+              - code: survey
+                system: http://terminology.hl7.org/CodeSystem/observation-category
+                display: Survey
+        subject:
+          reference: "Patient/{{ %patientId }}"
+        encounter:
+          reference: "Encounter/{{ %encounterId }}"
+        effectiveDateTime: "{{ now() }}"
+        valueString: "{{ %noteText }}"
+        performer:
+          - "{% if %author.exists() %}":
+              reference: "{{ %author.resourceType + '/' + %author.id }}"

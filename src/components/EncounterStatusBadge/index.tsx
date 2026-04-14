@@ -13,15 +13,19 @@ export function StatusBadge(props: Props) {
     const { token } = useToken();
 
     const statusHumanTitle = {
+        planned: t`booked`,
         'in-progress': t`in progress`,
         finished: t`completed`,
         completed: t`completed`,
+        cancelled: t`cancelled`,
     };
 
     const color = {
+        planned: token['blue-6'],
         'in-progress': token['orange-6'],
         finished: token['purple-6'],
         completed: token['purple-6'],
+        cancelled: token['red-6'],
     };
 
     return <Tag color={color[status]}>{statusHumanTitle[status] ?? status}</Tag>;

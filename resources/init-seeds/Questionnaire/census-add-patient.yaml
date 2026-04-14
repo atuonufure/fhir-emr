@@ -1,0 +1,84 @@
+id: census-add-patient
+resourceType: Questionnaire
+name: census-add-patient
+title: Add Patient to Census
+status: active
+mapping:
+  - reference: urn:uuid:Mapping:census-add-patient-extract
+launchContext:
+  - name:
+      code: Author
+    type:
+      - PractitionerRole
+      - Practitioner
+item:
+  - text: Patient info
+    type: group
+    linkId: patient-group
+    variable:
+      - name: PatientRef
+        language: text/fhirpath
+        expression: "%context.item.where(linkId='patient-ref').answer.valueReference.reference"
+      - name: SelectedPatient
+        language: application/x-fhir-query
+        expression: "{{ %PatientRef }}"
+    item:
+      - text: Patient name
+        type: reference
+        linkId: patient-ref
+        required: true
+        referenceResource:
+          - Patient
+        answerExpression:
+          language: application/x-fhir-query
+          expression: "Patient?_count=25"
+        choiceColumn:
+          - forDisplay: true
+            path: "name.given.first() + ' ' + name.family"
+      - text: Birth date
+        type: date
+        linkId: birth-date
+        readOnly: true
+        calculatedExpression:
+          language: text/fhirpath
+          expression: "%SelectedPatient.birthDate"
+  - text: Provider
+    type: reference
+    linkId: practitioner-role
+    required: true
+    referenceResource:
+      - PractitionerRole
+    answerExpression:
+      language: application/x-fhir-query
+      expression: "PractitionerRole?_assoc=practitioner"
+    choiceColumn:
+      - forDisplay: true
+        path: >-
+          practitioner.resource.name.given.first() + ' ' +
+          practitioner.resource.name.family + ' - ' + specialty.first().coding.display
+  - text: Type of Visit
+    type: choice
+    linkId: visit-type
+    required: true
+    answerOption:
+      - valueCoding:
+          system: http://terminology.hl7.org/CodeSystem/v3-ActCode
+          code: AMB
+          display: Ambulatory
+      - valueCoding:
+          system: http://terminology.hl7.org/CodeSystem/v3-ActCode
+          code: IMP
+          display: Inpatient
+      - valueCoding:
+          system: http://terminology.hl7.org/CodeSystem/v3-ActCode
+          code: EMER
+          display: Emergency
+      - valueCoding:
+          system: http://terminology.hl7.org/CodeSystem/v3-ActCode
+          code: HH
+          display: Home Health
+
+meta:
+  profile:
+    - https://emr-core.beda.software/StructureDefinition/fhir-emr-questionnaire
+url: https://aidbox.emr.beda.software/fhir/Questionnaire/census-add-patient
