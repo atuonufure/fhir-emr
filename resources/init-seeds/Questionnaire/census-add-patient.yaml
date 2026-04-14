@@ -1,0 +1,69 @@
+id: census-add-patient
+resourceType: Questionnaire
+name: census-add-patient
+title: Add Patient to Census
+status: active
+mapping:
+  - reference: urn:uuid:Mapping:census-add-patient-extract
+launchContext:
+  - name:
+      code: Author
+    type:
+      - PractitionerRole
+      - Practitioner
+item:
+  - text: Patient name
+    type: reference
+    linkId: patient-ref
+    required: true
+    referenceResource:
+      - Patient
+    answerExpression:
+      language: application/x-fhir-query
+      expression: "Patient?_count=25"
+    choiceColumn:
+      - forDisplay: true
+        path: "name.given.first() + ' ' + name.family"
+  - text: Birth date
+    type: date
+    linkId: birth-date
+    readOnly: true
+    calculatedExpression:
+      language: text/fhirpath
+      expression: "%QuestionnaireResponse.answers('patient-ref').resource.birthDate"
+  - text: Provider
+    type: reference
+    linkId: practitioner-role
+    required: true
+    referenceResource:
+      - PractitionerRole
+    answerExpression:
+      language: application/x-fhir-query
+      expression: "PractitionerRole?_assoc=practitioner"
+    choiceColumn:
+      - forDisplay: true
+        path: >-
+          practitioner.resource.name.given.first() + ' ' +
+          practitioner.resource.name.family
+  - text: Type of Visit
+    type: choice
+    linkId: visit-type
+    required: true
+    repeats: false
+    answerOption:
+      - valueCoding:
+          system: http://fhir.org/guides/argonaut-scheduling/CodeSystem/visit-type
+          code: consultation
+          display: Consultation
+      - valueCoding:
+          system: http://fhir.org/guides/argonaut-scheduling/CodeSystem/visit-type
+          code: follow-up
+          display: Follow-up
+      - valueCoding:
+          system: http://fhir.org/guides/argonaut-scheduling/CodeSystem/visit-type
+          code: urgent
+          display: Urgent
+meta:
+  profile:
+    - https://emr-core.beda.software/StructureDefinition/fhir-emr-questionnaire
+url: https://aidbox.emr.beda.software/fhir/Questionnaire/census-add-patient

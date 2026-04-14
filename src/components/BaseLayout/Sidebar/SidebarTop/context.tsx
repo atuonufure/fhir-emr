@@ -24,6 +24,7 @@ export type MenuLayoutValue = () => Array<Layout>;
 export const defaultMenuLayout: MenuLayoutValue = () =>
     matchCurrentUserRole({
         [Role.Admin]: () => [
+            { label: t`Census`, path: '/census', icon: <PatientsIcon /> },
             { label: t`Invoices`, path: '/invoices', icon: <InvoicesIcon /> },
             { label: t`Services`, path: '/healthcare-services', icon: <ServicesIcon /> },
             { label: t`Encounters`, path: '/encounters', icon: <EncountersIcon /> },
@@ -34,6 +35,7 @@ export const defaultMenuLayout: MenuLayoutValue = () =>
             { label: t`Magic Search`, path: '/magic-search', icon: <MagicSearchIcon /> },
         ],
         [Role.Practitioner]: () => [
+            { label: t`Census`, path: '/census', icon: <PatientsIcon /> },
             { label: t`Encounters`, path: '/encounters', icon: <EncountersIcon /> },
             { label: t`Patients`, path: '/patients', icon: <PatientsIcon /> },
             { label: t`Questionnaires`, path: '/questionnaires', icon: <QuestionnairesIcon /> },
